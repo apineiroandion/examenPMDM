@@ -79,6 +79,8 @@ En el codigo desde el que aprtimos esto se lanza desde el boton de color, lo he 
 ### 4. Comprobacion:
 
 
+![contador.png](app%2FimagesReadme%2Fcontador.png)
+
 
 ### 5. Mejora:
 

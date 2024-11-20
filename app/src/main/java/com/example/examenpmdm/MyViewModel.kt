@@ -10,6 +10,9 @@ import kotlinx.coroutines.launch
 
 class MyViewModel(): ViewModel() {
 
+    // valor actual de la cuenta atras
+    var cuentaAtras = mutableStateOf(0)
+
     // etiqueta para logcat
     private val TAG_LOG = "miDebug"
 
@@ -26,6 +29,19 @@ class MyViewModel(): ViewModel() {
     init {
         // estado inicial
         Log.d(TAG_LOG, "Inicializamos ViewModel - Estado: ${estadoLiveData.value}")
+    }
+
+    /**
+     * corrutina para la cuenta atras
+     */
+    fun cuentaAtras() {
+        viewModelScope.launch {
+            for (i in Datos.cuentaAtras downTo 0) {
+                cuentaAtras.value = i
+                Log.d(TAG_LOG, "cuenta atras: ${cuentaAtras.value} - Estado: ${estadoLiveData.value}")
+                delay(1000)
+            }
+        }
     }
 
     /**

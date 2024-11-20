@@ -33,6 +33,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun IU(miViewModel: MyViewModel) {
+    //añado el contenido del texto que muestra el numero de la cuenta atras, lo obtiene del ViewModel
+    val numero by remember { miViewModel.cuentaAtras }
     // para que sea mas facil la etiqueta del log
     // val TAG_LOG = "miDebug"
 
@@ -42,6 +44,8 @@ fun IU(miViewModel: MyViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceAround)
     {
+        //añado el texto donde mostrar la cuenta atras
+        Text(text = numero.toString(), fontSize = 20.sp)
         Column {
             Row {
                 // creo un boton rojo

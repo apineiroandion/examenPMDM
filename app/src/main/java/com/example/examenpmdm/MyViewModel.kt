@@ -31,18 +31,6 @@ class MyViewModel(): ViewModel() {
         Log.d(TAG_LOG, "Inicializamos ViewModel - Estado: ${estadoLiveData.value}")
     }
 
-    /**
-     * corrutina para la cuenta atras
-     */
-    fun cuentaAtras() {
-        viewModelScope.launch {
-            for (i in Datos.cuentaAtras downTo 0) {
-                cuentaAtras.value = i
-                Log.d(TAG_LOG, "cuenta atras: ${cuentaAtras.value} - Estado: ${estadoLiveData.value}")
-                delay(1000)
-            }
-        }
-    }
 
     /**
      * crear entero random
@@ -60,6 +48,7 @@ class MyViewModel(): ViewModel() {
         Datos.numero = numero
         // cambiamos estado, por lo tanto la IU se actualiza
         estadoLiveData.value = Estados.ADIVINANDO
+        estadosAuxiliares()
     }
 
     /**
@@ -69,14 +58,12 @@ class MyViewModel(): ViewModel() {
      */
     fun comprobar(ordinal: Int): Boolean {
 
-        // mientras comprobamos, lanzamos estados auxiliares en paralelo
-        estadosAuxiliares()
-
         Log.d(TAG_LOG, "comprobamos - Estado: ${estadoLiveData.value}")
         return if (ordinal == Datos.numero) {
             Log.d(TAG_LOG, "es correcto")
             estadoLiveData.value = Estados.INICIO
             Log.d(TAG_LOG, "GANAMOS - Estado: ${estadoLiveData.value}")
+            pararCorutina()
             true
         } else {
             Log.d(TAG_LOG, "no es correcto")
@@ -91,18 +78,60 @@ class MyViewModel(): ViewModel() {
      */
     fun estadosAuxiliares() {
         viewModelScope.launch {
+            cuentaAtras.value = Datos.cuentaAtras
             // guardamos el estado auxiliar
             var estadoAux = EstadosAuxiliares.AUX1
 
             // hacemos un cambio a tres estados auxiliares
             Log.d(TAG_LOG, "estado (corutina): ${estadoAux}")
-            delay(1500)
+            delay(1000)
+            if(cuentaAtras.value > 0) {
+                cuentaAtras.value--
+            }else{
+                return@launch
+            }
             estadoAux = EstadosAuxiliares.AUX2
             Log.d(TAG_LOG, "estado (corutina): ${estadoAux}")
-            delay(1500)
+            delay(1000)
+            if(cuentaAtras.value > 0) {
+                cuentaAtras.value--
+            }else{
+                return@launch
+            }
             estadoAux = EstadosAuxiliares.AUX3
             Log.d(TAG_LOG, "estado (corutina): ${estadoAux}")
-            delay(1500)
+            delay(1000)
+            if(cuentaAtras.value > 0) {
+                cuentaAtras.value--
+            }else{
+                return@launch
+            }
+            estadoAux = EstadosAuxiliares.AUX4
+            Log.d(TAG_LOG, "estado (corutina): ${estadoAux}")
+            delay(1000)
+            if(cuentaAtras.value > 0) {
+                cuentaAtras.value--
+            }else{
+                return@launch
+            }
+            estadoAux = EstadosAuxiliares.AUX5
+            Log.d(TAG_LOG, "estado (corutina): ${estadoAux}")
+            delay(1000)
+            if(cuentaAtras.value > 0) {
+                cuentaAtras.value--
+            }else{
+                return@launch
+            }
+            estadoLiveData.value = Estados.INICIO
+        }
+    }
+
+    /**
+     * metodo que para la corutina
+     */
+    fun pararCorutina() {
+        viewModelScope.launch {
+            cuentaAtras.value = 0
         }
     }
 }
